@@ -7,7 +7,6 @@ class State(BaseModel):
     """Represents a state entity.
 
     Attributes:
-        
         name (str): The name of the state.
     """
 

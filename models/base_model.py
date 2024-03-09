@@ -8,12 +8,10 @@ from uuid import uuid4
 
 
 tFormat = "%Y-%m-%dT%H:%M:%S.%f"
-# cl_Name = ""
-#new_Dict = ""
 
 
 class BaseModel:
-    """The BaseModel serves as the foundation from which future classes will inherit."""
+    """The BaseModel serves as base from which future classes will inherit."""
 
     def __init__(self, *args, **kwargs):
         """Initialization of BaseModel class
@@ -34,14 +32,13 @@ class BaseModel:
         else:
             models.storage.new(self)
 
-
     def save(self):
-        """Updates or timestamps the attribute "update_at" with the current datetime."""
+        """Updates attribute "update_at" with the current datetime."""
         self.update_at = datetime.now()
         models.storage.save()
 
     def __str__(self):
-        """Return the string representation of the BaseModel instance for printing."""
+        """Return the string representation of BaseModel instance."""
         cl_Name = self.__class__.__name__
         return "[{}] ({}) {}".format(cl_Name, self.id, self.__dict__)
 
@@ -56,6 +53,3 @@ class BaseModel:
         new_Dict["updated_at"] = self.updated_at.isoformat()
         new_Dict["__class__"] = self.__class__.__name__
         return new_Dict
-
-
-

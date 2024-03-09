@@ -13,7 +13,6 @@ class User(BaseException):
         last_name (str): The last name of the user.
     """
 
-
     email = ""
     password = ""
     first_name = ""
