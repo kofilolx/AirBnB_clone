@@ -12,7 +12,7 @@ updating object attributes, and deleting objects.
 - **Retrieve:** Access objects from files, databases, etc.
 - **Operations:** Perform various operations on objects, such as counting and computing statistics.
 - **Update:** Modify attributes of existing objects.
-- **Destroy:** Remove objects from the system.
+- **Destroy:** Remove or delete objects from the system.
 
 ## Environment
 
@@ -27,11 +27,13 @@ This project is developed and tested on Ubuntu 14.04 LTS, utilizing Python 3 (ve
 
 ## Description
 
-This project, part of the ALX Software Engineer program, marks the initial phase in developing a full web application: an AirBnB clone. It entails creating a custom command-line interface for data management and defining base classes for storing this data.
+This project, part of the ALX Software Engineer program, marks the initial phase in developing a full web application: an AirBnB clone. 
+It entails creating a custom command-line interface for data management and defining base classes for storing this data.
 
 ## Tests
 
-The code undergoes testing using the unittest module. Tests for the classes are located within the test_models folder.
+The code undergoes testing using the unittest module. 
+Tests for the classes are located within the test_models folder.
 
 ## Authors
 
