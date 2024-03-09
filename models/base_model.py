@@ -38,7 +38,7 @@ class BaseModel:
     def save(self):
         """Updates or timestamps the attribute "update_at" with the current datetime."""
         self.update_at = datetime.now()
-        model.storage.save()
+        models.storage.save()
 
     def __str__(self):
         """Return the string representation of the BaseModel instance for printing."""
