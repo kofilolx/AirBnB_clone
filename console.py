@@ -14,6 +14,7 @@ from models.review import Review
 
 
 def parse(arg):
+    """Implementation of regEx"""
     curly_braces = re.search(r"\{(.*?)\}", arg)
     brackets = re.search(r"\[(.*?)\]", arg)
     if curly_braces is None:
