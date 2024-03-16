@@ -4,17 +4,16 @@ import cmd
 import re
 from shlex import split
 from models import storage
-from models.amenity import Amenity
 from models.base_model import BaseModel
-from models.city import City
 from models.user import User
 from models.state import State
+from models.city import City
 from models.place import Place
+from models.amenity import Amenity
 from models.review import Review
 
 
 def parse(arg):
-    """Implementation of regEx"""
     curly_braces = re.search(r"\{(.*?)\}", arg)
     brackets = re.search(r"\[(.*?)\]", arg)
     if curly_braces is None:
@@ -33,10 +32,9 @@ def parse(arg):
 
 
 class HBNBCommand(cmd.Cmd):
-    """Defines the HolbertonBnB command-line interpreter.
-
+    """Defines the HolbertonBnB command interpreter.
     Attributes:
-        prompt (str): prompt utilized within the interpreter.
+        prompt (str): The command prompt.
     """
 
     prompt = "(hbnb) "
@@ -54,18 +52,9 @@ class HBNBCommand(cmd.Cmd):
         """Do nothing upon receiving an empty line."""
         pass
 
-    def do_quit(self, arg):
-        """ Exit console successfully."""
-        return True
-
-    def do_EOF(self, arg):
-        """EOF signal to exit the program."""
-        print("")
-        return True
-
     def default(self, arg):
         """Default behavior for cmd module when input is invalid"""
-        arg_dict = {
+        argdict = {
             "all": self.do_all,
             "show": self.do_show,
             "destroy": self.do_destroy,
@@ -78,23 +67,32 @@ class HBNBCommand(cmd.Cmd):
             match = re.search(r"\((.*?)\)", argl[1])
             if match is not None:
                 command = [argl[1][:match.span()[0]], match.group()[1:-1]]
-                if command[0] in arg_dict.keys():
+                if command[0] in argdict.keys():
                     call = "{} {}".format(argl[0], command[1])
-                    return arg_dict[command[0]](call)
-        print(super().default(arg))
+                    return argdict[command[0]](call)
+        print("*** Unknown syntax: {}".format(arg))
         return False
+
+    def do_quit(self, arg):
+        """Quit command to exit the program."""
+        return True
+
+    def do_EOF(self, arg):
+        """EOF signal to exit the program."""
+        print("")
+        return True
 
     def do_create(self, arg):
         """Usage: create <class>
-        Create's a new class instance and print it's id.
+        Create a new class instance and print its id.
         """
-        arg_l = parse(arg)
-        if len(arg_l) == 0:
+        argl = parse(arg)
+        if len(argl) == 0:
             print("** class name missing **")
-        elif arg_l[0] not in HBNBCommand.__classes:
+        elif argl[0] not in HBNBCommand.__classes:
             print("** class doesn't exist **")
         else:
-            print(eval(arg_l[0])().id)
+            print(eval(argl[0])().id)
             storage.save()
 
     def do_show(self, arg):
@@ -113,16 +111,6 @@ class HBNBCommand(cmd.Cmd):
             print("** no instance found **")
         else:
             print(objdict["{}.{}".format(argl[0], argl[1])])
-
-    def do_count(self, arg):
-        """Usage: count <class> or <class>.count()
-        Retrieve the number of instances of a given class."""
-        argl = parse(arg)
-        counter = 0
-        for obj in storage.all().values():
-            if argl[0] == obj.__class__.__name__:
-                counter += 1
-        print(counter)
 
     def do_destroy(self, arg):
         """Usage: destroy <class> <id> or <class>.destroy(<id>)
@@ -156,6 +144,16 @@ class HBNBCommand(cmd.Cmd):
                 elif len(argl) == 0:
                     objl.append(obj.__str__())
             print(objl)
+
+    def do_count(self, arg):
+        """Usage: count <class> or <class>.count()
+        Retrieve the number of instances of a given class."""
+        argl = parse(arg)
+        count = 0
+        for obj in storage.all().values():
+            if argl[0] == obj.__class__.__name__:
+                count += 1
+        print(count)
 
     def do_update(self, arg):
         """Usage: update <class> <id> <attribute_name> <attribute_value> or
@@ -191,19 +189,19 @@ class HBNBCommand(cmd.Cmd):
         if len(argl) == 4:
             obj = objdict["{}.{}".format(argl[0], argl[1])]
             if argl[2] in obj.__class__.__dict__.keys():
-                valType = type(obj.__class__.__dict__[argl[2]])
-                obj.__dict__[argl[2]] = valType(argl[3])
+                valtype = type(obj.__class__.__dict__[argl[2]])
+                obj.__dict__[argl[2]] = valtype(argl[3])
             else:
                 obj.__dict__[argl[2]] = argl[3]
         elif type(eval(argl[2])) == dict:
             obj = objdict["{}.{}".format(argl[0], argl[1])]
-            for key, value in eval(argl[2]).items():
-                if (key in obj.__class__.__dict__.keys() and
-                        type(obj.__class__.__dict__[key]) in {str, int, float}):
-                    valType = type(obj.__class__.__dict__[key])
-                    obj.__dict__[key] = valType(value)
+            for k, v in eval(argl[2]).items():
+                if (k in obj.__class__.__dict__.keys() and
+                        type(obj.__class__.__dict__[k]) in {str, int, float}):
+                    valtype = type(obj.__class__.__dict__[k])
+                    obj.__dict__[k] = valtype(v)
                 else:
-                    obj.__dict__[key] = value
+                    obj.__dict__[k] = v
         storage.save()
 
 
